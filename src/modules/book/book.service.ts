@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaClient } from '@prisma/client';
+import { PrismaService } from 'src/database/PrismaService';
 import { BookDTO } from './book.dto';
 
 @Injectable()
 export class BookService {
-  constructor(private prisma: PrismaClient) {}
+  constructor(private prisma: PrismaService) {}
 
   async create(data: BookDTO) {
     const bookExists = await this.prisma.book.findFirst({
@@ -25,7 +25,7 @@ export class BookService {
   }
 
   async findAll() {
-    this.prisma.book.findMany();
+    return this.prisma.book.findMany();
   }
 
   async update(id: string, data: BookDTO) {
@@ -36,7 +36,7 @@ export class BookService {
     });
 
     if (!bookExists) {
-      throw new Error('Book does not exists');
+      throw new Error('Book does not exists!');
     }
 
     return await this.prisma.book.update({
@@ -55,7 +55,7 @@ export class BookService {
     });
 
     if (!bookExists) {
-      throw new Error('Book does not exists');
+      throw new Error('Book does not exists!');
     }
 
     return await this.prisma.book.delete({

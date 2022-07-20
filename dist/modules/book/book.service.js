@@ -11,7 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.BookService = void 0;
 const common_1 = require("@nestjs/common");
-const client_1 = require("@prisma/client");
+const PrismaService_1 = require("../../database/PrismaService");
 let BookService = class BookService {
     constructor(prisma) {
         this.prisma = prisma;
@@ -31,7 +31,7 @@ let BookService = class BookService {
         return book;
     }
     async findAll() {
-        this.prisma.book.findMany();
+        return this.prisma.book.findMany();
     }
     async update(id, data) {
         const bookExists = await this.prisma.book.findUnique({
@@ -40,7 +40,7 @@ let BookService = class BookService {
             },
         });
         if (!bookExists) {
-            throw new Error('Book does not exists');
+            throw new Error('Book does not exists!');
         }
         return await this.prisma.book.update({
             data,
@@ -56,7 +56,7 @@ let BookService = class BookService {
             },
         });
         if (!bookExists) {
-            throw new Error('Book does not exists');
+            throw new Error('Book does not exists!');
         }
         return await this.prisma.book.delete({
             where: {
@@ -67,7 +67,7 @@ let BookService = class BookService {
 };
 BookService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [client_1.PrismaClient])
+    __metadata("design:paramtypes", [PrismaService_1.PrismaService])
 ], BookService);
 exports.BookService = BookService;
 //# sourceMappingURL=book.service.js.map
